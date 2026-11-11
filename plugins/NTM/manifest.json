@@ -5,7 +5,7 @@
   "description": "Disable tapping a message author's name to insert a mention.",
   "author": "dariussbezy",
   "icon": "PersonIcon",
-  "version": "1.0.1-beta",
+  "version": "1.0.2-beta",
   "dependencies": { "valenced.api": { "version": ">=1 <2" }, "discord": {} },
   "dist": { "script": "index.js" }
 }

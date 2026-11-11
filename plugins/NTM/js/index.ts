@@ -1,5 +1,5 @@
 import { getModules } from '@valenced/modules/finders';
-import { withName } from '@valenced/modules/finders/filters';
+import { withName, withProps } from '@valenced/modules/finders/filters';
 import { after } from '@valenced/patcher';
 import { cloneElement, isValidElement } from 'react';
 
@@ -43,6 +43,10 @@ export default plugin({
       cleanup(after(owner, key, result => decorate(result)));
     };
     cleanup(getModules(withName('MessagesRenderer'), attach, { returnNamespace: true }));
+    // Discord exports React.memo(MessagesRenderer), whose outer object has no name.
+    cleanup(getModules(withProps<{ type: { name?: string } }>('type'), component => {
+      if (component.type?.name === 'MessagesRenderer') attach({ default: component });
+    }));
     if (instance.startedLate) instance.requireReload();
   },
 });

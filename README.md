@@ -10,7 +10,7 @@ Add this repository URL in **Valenced → Plugins → Advanced**:
 https://raw.githubusercontent.com/dariussbezy/No-Tap-Mention/main/index.json
 ```
 
-Install **No Tap Mention**, select **beta**, enable it and restart Discord. Version: **1.0.1-beta**.
+Install **No Tap Mention**, select **beta**, enable it and restart Discord. Version: **1.0.2-beta**.
 
 Disable **Tap to Profile** if installed: these plugins change the same action. Avatar taps and long presses are left unchanged.
 
