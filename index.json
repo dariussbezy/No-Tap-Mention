@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "name": "No Tap Mention",
+  "description": "Disable tapping a message author's name to insert a mention.",
+  "plugins": {
+    "dariuss.no-tap-mention": {
+      "name": "No Tap Mention",
+      "description": "Disable tapping a message author's name to insert a mention.",
+      "author": "dariussbezy",
+      "icon": "PersonIcon",
+      "channels": {
+        "beta": "1.0.0-beta"
+      },
+      "versions": {
+        "1.0.0-beta": {
+          "url": "https://raw.githubusercontent.com/dariussbezy/No-Tap-Mention/refs/heads/main/pool/dariuss.no-tap-mention@1.0.0-beta.zip",
+          "sha256": "c1f257b76002461f1ba38a89fb2929d8b2be8b718242484f0ec9a4333a856530",
+          "size": 741,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {}
+          }
+        }
+      }
+    }
+  }
+}
