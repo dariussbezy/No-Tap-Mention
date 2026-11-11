@@ -1,6 +1,6 @@
 {
   "name": "@dariuss/no-tap-mention",
-  "version": "1.0.2-beta",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
