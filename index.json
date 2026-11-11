@@ -9,13 +9,24 @@
       "author": "dariussbezy",
       "icon": "PersonIcon",
       "channels": {
-        "beta": "1.0.0-beta"
+        "beta": "1.0.1-beta"
       },
       "versions": {
         "1.0.0-beta": {
           "url": "https://raw.githubusercontent.com/dariussbezy/No-Tap-Mention/refs/heads/main/pool/dariuss.no-tap-mention@1.0.0-beta.zip",
           "sha256": "c1f257b76002461f1ba38a89fb2929d8b2be8b718242484f0ec9a4333a856530",
           "size": 741,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {}
+          }
+        },
+        "1.0.1-beta": {
+          "url": "https://raw.githubusercontent.com/dariussbezy/No-Tap-Mention/refs/heads/main/pool/dariuss.no-tap-mention@1.0.1-beta.zip",
+          "sha256": "f0de7ccf5a7e8fcbd5b75738d8c7b2d3ed69cf6e70944a6e7d5aa5021bfef0ac",
+          "size": 992,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"

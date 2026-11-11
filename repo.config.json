@@ -1,5 +1,5 @@
 {
   "name": "No Tap Mention",
   "description": "Disable tapping a message author's name to insert a mention.",
-  "channels": { "dariuss.no-tap-mention": { "beta": "1.0.0-beta" } }
+  "channels": { "dariuss.no-tap-mention": { "beta": "1.0.1-beta" } }
 }

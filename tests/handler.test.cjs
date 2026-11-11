@@ -1,39 +1,27 @@
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const vm = require('node:vm');
-const ts = require('typescript');
-
-test('username taps do nothing, avatar taps still work, and cleanup restores the original action', () => {
- let mentions = 0, profiles = 0;
- const handlers = { handleTapUsername: () => ++mentions, handleTapAvatar: () => ++profiles };
- const original = handlers.handleTapUsername;
- const cleanups = [];
- const modules = {
-  '@valenced/modules/finders': { getModules: (filter, callback) => {
-   if (filter === 'handleTapUsername') callback(handlers);
-   else callback({ prototype: handlers });
-   return () => {};
-  } },
-  '@valenced/modules/finders/filters': { withProps: prop => prop },
-  '@valenced/patcher': { instead: (target, key, replacement) => {
-   const previous = target[key];
-   target[key] = replacement;
-   return () => { target[key] = previous; };
-  } },
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const ts=require('typescript');
+const React=require('react');
+test('native message callback is blocked while avatar and long press stay intact; disabling restores existing rows',()=>{
+ let mentions=0,avatars=0,longs=0;
+ const nativeProps={onTapUsername:()=>++mentions,onTapAvatar:()=>++avatars,onLongPressUsername:()=>++longs};
+ const namespace={default:function MessagesRenderer(){return React.createElement('container',null,React.createElement('NativeChat',nativeProps));}};
+ const cleanups=[];
+ const modules={
+  '@valenced/modules/finders':{getModules:(filter,callback)=>{if(filter==='MessagesRenderer')callback(namespace);return()=>{};}},
+  '@valenced/modules/finders/filters':{withName:x=>x,withProps:x=>x},
+  '@valenced/patcher':{after:(owner,key,callback)=>{const old=owner[key];owner[key]=function(...args){return callback(old.apply(this,args),args)??old.apply(this,args);};return()=>{owner[key]=old;};},instead:()=>()=>{}},
+  react:React,
  };
- const source = fs.readFileSync(new URL('../plugins/NTM/js/index.ts', require('node:url').pathToFileURL(__filename)), 'utf8');
- const js = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
- const exports = {};
- vm.runInNewContext(js, { exports, plugin: value => value, require: name => modules[name] });
- exports.default.start({ cleanup: fn => cleanups.push(fn), plugin: { startedLate: false } });
- handlers.handleTapUsername({ userId: '123' });
- assert.equal(mentions, 0);
- assert.equal(profiles, 0);
- handlers.handleTapAvatar();
- assert.equal(profiles, 1);
- cleanups.reverse().forEach(fn => fn());
- assert.equal(handlers.handleTapUsername, original);
- handlers.handleTapUsername();
- assert.equal(mentions, 1);
+ const source=fs.readFileSync('plugins/NTM/js/index.ts','utf8');
+ const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
+ const exports={};vm.runInNewContext(js,{exports,plugin:v=>v,require:name=>modules[name]});
+ exports.default.start({cleanup:fn=>cleanups.push(fn),plugin:{startedLate:false}});
+ const row=namespace.default().props.children;
+ row.props.onTapUsername({userId:'123'});assert.equal(mentions,0);
+ row.props.onTapAvatar();row.props.onLongPressUsername();assert.equal(avatars,1);assert.equal(longs,1);
+ assert.notEqual(row.props.onTapUsername,nativeProps.onTapUsername);
+ cleanups.reverse().forEach(fn=>fn());row.props.onTapUsername();assert.equal(mentions,1);
 });
